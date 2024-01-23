@@ -8,7 +8,7 @@ RUN gradle clean build
 FROM openjdk:11
 
 ENV APPLICATION_USER 1033
-RUN useradd -ms /bin/bash $APPLICATION_USER
+#RUN useradd -ms /bin/bash $APPLICATION_USER
 
 COPY --from=build /appbuild/build/libs/KtorEasy.jar /app/KtorEasy.jar
 COPY --from=build /appbuild/src/main/resources/ /app/resources/

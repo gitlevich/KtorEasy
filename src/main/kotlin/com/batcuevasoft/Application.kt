@@ -21,7 +21,7 @@ import io.micrometer.prometheus.PrometheusMeterRegistry
 import org.koin.dsl.module
 import org.koin.ktor.plugin.Koin
 
-fun main(args: Array<String>) {
+fun main() {
 
     val environment = System.getenv()["ENVIRONMENT"] ?: handleDefaultEnvironment()
     val config = extractConfig(environment, HoconApplicationConfig(ConfigFactory.load()))

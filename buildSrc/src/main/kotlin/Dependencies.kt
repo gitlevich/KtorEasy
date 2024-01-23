@@ -1,25 +1,25 @@
 object Dependencies {
 
     object Versions {
-        const val kotlinPluginVersion = "1.8.0"
-        const val ktorPluginVersion = "2.2.3"
+        const val kotlinPluginVersion = "1.9.22"
+        const val ktorPluginVersion = "2.3.7"
         const val shadowJarVersion = "5.0.0"
 
-        const val ktorVersion = "2.2.3"
+        const val ktorVersion = "2.3.7"
         const val h2Version = "2.1.214"
-        const val koinVersion = "3.3.3"
-        const val koinKtorVersion = "3.3.1"
-        const val exposedVersion = "0.41.1"
-        const val logbackVersion = "1.4.5"
-        const val hikariVersion = "5.0.1"
-        const val mysqlVersion = "8.0.32"
+        const val koinVersion = "3.5.3"
+        const val koinKtorVersion = "3.5.3"
+        const val exposedVersion = "0.46.0"
+        const val logbackVersion = "1.4.14"
+        const val hikariVersion = "5.1.0"
+        const val postgresVersion = "42.5.1"
         const val bcryptVersion = "0.4"
 
-        const val micrometerPrometeusVersion = "1.10.3"
+        const val micrometerPrometeusVersion = "1.12.2"
 
-        const val assertJVersion = "3.24.2"
-        const val junit = "5.9.2"
-        const val mockK = "1.13.4"
+        const val assertJVersion = "3.25.1"
+        const val junit = "5.10.1"
+        const val mockK = "1.13.9"
     }
 
 
@@ -39,7 +39,7 @@ object Dependencies {
     val exposedJdbc = "org.jetbrains.exposed:exposed-jdbc:${Versions.exposedVersion}"
     val hikari = "com.zaxxer:HikariCP:${Versions.hikariVersion}"
     val h2 = "com.h2database:h2:${Versions.h2Version}"
-    val mysqlConnector = "com.mysql:mysql-connector-j:${Versions.mysqlVersion}"
+    val postgresConnector = "org.postgresql:postgresql:${Versions.postgresVersion}"
 
     val bcrypt = "org.mindrot:jbcrypt:${Versions.bcryptVersion}"
 
@@ -52,6 +52,9 @@ object Dependencies {
     // Testing
     val koinTest = "io.insert-koin:koin-test:${Versions.koinVersion}"
     val ktorServerTest = "io.ktor:ktor-server-test-host:${Versions.ktorVersion}"
+    val ktorClientCore = "io.ktor:ktor-client-core:${Versions.ktorVersion}"
+    val ktorClientContentNegotiation = "io.ktor:ktor-client-content-negotiation-jvm:${Versions.ktorVersion}"
+    val ktorClientJetty = "io.ktor:ktor-client-jetty:${Versions.ktorVersion}"
     val assertJ = "org.assertj:assertj-core:${Versions.assertJVersion}"
     val junit = "org.junit.jupiter:junit-jupiter:${Versions.junit}"
     val junitEngine = "org.junit.jupiter:junit-jupiter-engine:${Versions.junit}"

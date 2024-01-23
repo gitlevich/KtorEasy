@@ -4,16 +4,13 @@ import com.google.gson.Gson
 import io.ktor.serialization.gson.*
 import io.ktor.server.application.*
 import io.ktor.server.plugins.contentnegotiation.*
-import io.ktor.server.testing.TestApplicationEngine
-import io.ktor.server.testing.TestApplicationResponse
-import io.ktor.server.testing.withTestApplication
+import io.ktor.server.testing.*
 import org.koin.core.context.stopKoin
 import org.koin.core.module.Module
 import org.koin.ktor.plugin.Koin
 
 abstract class BaseRoutingTest {
 
-    private val gson = Gson()
     protected var koinModules: Module? = null
     protected var moduleList: Application.() -> Unit = { }
 
@@ -21,16 +18,16 @@ abstract class BaseRoutingTest {
         stopKoin()
     }
 
-    fun <R> withBaseTestApplication(test: TestApplicationEngine.() -> R) {
-        withTestApplication({
-            install(ContentNegotiation) { gson { } }
+    fun withBaseTestApplication(test: suspend ApplicationTestBuilder.() -> Unit) {
+        testApplication {
             koinModules?.let {
-                install(Koin) {
-                    modules(it)
-                }
+                install(ContentNegotiation) { gson { } }
+                install(Koin) { modules(it) }
             }
-            moduleList()
-        }) {
+            application {
+                moduleList()
+            }
+
             test()
         }
     }
@@ -39,5 +36,9 @@ abstract class BaseRoutingTest {
 
     fun <R> TestApplicationResponse.parseBody(clazz: Class<R>): R {
         return gson.fromJson(content, clazz)
+    }
+
+    companion object {
+        private val gson = Gson()
     }
 }

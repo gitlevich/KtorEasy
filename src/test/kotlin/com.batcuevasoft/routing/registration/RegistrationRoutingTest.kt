@@ -7,6 +7,8 @@ import com.batcuevasoft.routing.BaseRoutingTest
 import com.batcuevasoft.routing.instrumentation.RegistrationControllerInstrumentation.givenAResponseUser
 import com.batcuevasoft.routing.instrumentation.RegistrationControllerInstrumentation.givenPostUserBody
 import com.batcuevasoft.statuspages.InvalidUserException
+import io.ktor.client.call.*
+import io.ktor.client.request.*
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpMethod
@@ -46,21 +48,19 @@ class RegistrationRoutingTest : BaseRoutingTest() {
     }
 
     @Test
-    fun `when creating user with succesful insertion, we return response user body`() = withBaseTestApplication {
+    fun `when creating user with successful insertion, we return response user body`() = withBaseTestApplication {
         val userId = 11
         val responseUser = givenAResponseUser(userId)
         coEvery { registrationController.createUser(any()) } returns responseUser
 
         val body = toJsonBody(givenPostUserBody())
-        val call = handleRequest(HttpMethod.Post, "/user") {
-            addHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
+        val response = client.post("/user") {
+            header(HttpHeaders.ContentType, ContentType.Application.Json.toString())
             setBody(body)
         }
-        with(call) {
-            assertThat(HttpStatusCode.OK).isEqualTo(response.status())
-            val responseBody = response.parseBody(ResponseUser::class.java)
-            assertThat(responseUser).isEqualTo(responseBody)
-        }
+        assertThat(HttpStatusCode.OK).isEqualTo(response.status)
+        val responseBody = response.body<ResponseUser>()
+        assertThat(responseUser).isEqualTo(responseBody)
     }
 
     @Test
@@ -69,8 +69,8 @@ class RegistrationRoutingTest : BaseRoutingTest() {
 
         val body = toJsonBody(givenPostUserBody())
         val exception = assertThrows<InvalidUserException> {
-            handleRequest(HttpMethod.Post, "/user") {
-                addHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
+            client.post("/user") {
+                header(HttpHeaders.ContentType, ContentType.Application.Json.toString())
                 setBody(body)
             }
         }

@@ -1,19 +1,25 @@
 version: '2.1'
+
 services:
   db:
-    image: mariadb:latest
+    hostname: postgres
+    image: postgres:bullseye
+    command: postgres -c 'max_connections=200'
+    container_name: postgres
     restart: always
+    # The PGUSER environment variable is required by the healthcheck test.
     environment:
-      - MYSQL_ROOT_PASSWORD=mypassword
-      - MYSQL_DATABASE=ktoreasydb
-      - MYSQL_USER=ktoreasyuser
-      - MYSQL_PASSWORD=ktoreasypassword
+      - POSTGRES_DB=washington
+      - PGUSER=washington
+      - POSTGRES_USER=washington
+      - POSTGRES_PASSWORD=washington
     ports:
-      - "3308:3306"
+      - "5432:5432"
     healthcheck:
-      test: mysqladmin ping -h 127.0.0.1 -u$$MYSQL_USER -p$$MYSQL_PASSWORD
-      timeout: 3s
-      retries: 5
+      test: "pg_isready"
+      interval: 5s
+      timeout: 10s
+      retries: 3
 
   backend:
     build: .

@@ -23,7 +23,7 @@ repositories {
 
 
 dependencies {
-    implementation(kotlin("stdlib-jdk8"))
+//    implementation(kotlin("stdlib-jdk8"))
     implementation(Dependencies.ktorNetty)
     implementation(Dependencies.ktorAuth)
     implementation(Dependencies.ktorJwt)
@@ -38,13 +38,14 @@ dependencies {
     implementation(Dependencies.exposedJdbc)
     implementation(Dependencies.hikari)
     implementation(Dependencies.h2)
-    implementation(Dependencies.mysqlConnector)
+    implementation(Dependencies.postgresConnector)
 
     implementation(Dependencies.bcrypt)
     implementation(Dependencies.micrometerPrometeus)
 
     // Koin for Kotlin
     implementation(Dependencies.koin)
+    implementation("io.ktor:ktor-client-jetty:2.3.7")
 
     // Koin for Unit tests
     testImplementation(Dependencies.koinTest)
@@ -53,6 +54,9 @@ dependencies {
     testImplementation(Dependencies.junit)
     testRuntimeOnly(Dependencies.junitEngine)
     testImplementation(Dependencies.mockK)
+    testImplementation(Dependencies.ktorClientCore)
+    testImplementation(Dependencies.ktorClientContentNegotiation)
+    testImplementation(Dependencies.ktorClientJetty)
 }
 
 tasks {
@@ -65,7 +69,7 @@ tasks {
 
     // config JVM target to 1.8 for kotlin compilation tasks
     compileKotlin {
-        kotlinOptions.jvmTarget = "11"
+        kotlinOptions.jvmTarget = "17"
     }
 
     shadowJar {
